@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using BultyBook.DataAccess.Data;
 using BultyBook.Models;
 
