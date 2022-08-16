@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BultyBook.DataAccess.Repository.IRepository
+﻿namespace BultyBook.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
@@ -12,6 +6,8 @@ namespace BultyBook.DataAccess.Repository.IRepository
         public ICategoryRepository Category { get; }
         public IProductRepository Product { get; }
         public ICompanyRepository Company { get; }
+        public IShoppingCartRepository ShoppingCart { get; }
+        public IApplicationUserRepository ApplicationUser { get; }
 
         void Save();
     }
