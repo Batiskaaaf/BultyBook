@@ -30,9 +30,13 @@ namespace BultyBook.DataAccess.Repository
             return dbSet.Find(id) != null;
         }
 
-        public IEnumerable<T> GetAll(string? includeProperies = null)
+        public IEnumerable<T> GetAll(Expression<Func<T,bool>>? filter = null, string? includeProperies = null)
         {
             IQueryable<T> query = dbSet;
+
+            if(filter != null)
+                query = query.Where(filter);
+
             if(includeProperies != null)
             {
                 foreach(var property in includeProperies.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

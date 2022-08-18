@@ -17,6 +17,8 @@ namespace BultyBook.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = default!;
         public DbSet<Company> Companies { get; set; } = default!;
         public DbSet<ShoppingCart> ShoppingCart { get; set; } = default!;
+        public DbSet<OrderHeader> OrderHeaders { get; set; } = default!;
+        public DbSet<OrderDetail> OrderDetails { get; set; } = default!;
 
     }
 }
