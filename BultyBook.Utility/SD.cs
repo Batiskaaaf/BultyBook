@@ -22,6 +22,7 @@ namespace BultyBook.Utility
 
         public const string PaymentStatusPending = "Pending";
         public const string PaymentStatusApproved = "Approved";
+        public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
         public const string PaymentStatusInProcess = "ApprovedForDelayedPayment";
         public const string PaymentStatusShipped = "Rejected";
     }

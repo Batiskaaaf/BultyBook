@@ -14,7 +14,7 @@ namespace BultyBook.DataAccess.Repository
 
         public void Update(OrderHeader orderHeader)
         {
-            context.OrderHeaders.Update(orderHeader);
+            context.OrderHeaders.Update(orderHeader); 
         }
 
         public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
@@ -26,6 +26,14 @@ namespace BultyBook.DataAccess.Repository
                 if(paymentStatus != null)
                     order.PaymentStatus = paymentStatus;
             }
+        }
+
+        public void UpdateStripePaymentId(int id, string sessionId, string paymentIntentId)
+        {
+            var order = context.OrderHeaders.FirstOrDefault(x => x.Id == id);
+            order.PaymentDate = DateTime.Now;
+            order.SessionId = sessionId;
+            order.PaymentIntentId = paymentIntentId;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿@model BultyBook.Models.VIewModels.ShoppingCartVM
+@using Microsoft.Extensions.Options;
+@inject IOptions<BultyBook.Utility.StripeSettings> Stripe
 
 <form method="post">
 	<br />

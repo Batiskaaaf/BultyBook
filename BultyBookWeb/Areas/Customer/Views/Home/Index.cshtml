@@ -4,35 +4,24 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row pb-3">
+<div class="card-group">
     @foreach(var product in Model)
-    {
-        <div class="col-lg-3 col-md-6">
-            <div class="row p-2">
-                <div class="col-12 p-1" style="border:1px solid #008cba; border-radius: 5px;">
-                    <div class="card">
-                        <img src="@product.ImageUrl" class="card-img-top rounded"/>
-                        <div class="card-body p-3">
-                            <div class="pl-1">
-                                <p class="card-title h5 text-primary">@product.Name</p>
-                                <p class="card-title text-info">by @product.Author</p>
-                            </div>
-                            <div class="pl-1">
-                                <p>List Price: <strike><b>$@product.Price.ToString("0.00")</b></strike></p>
-                            </div>
-                            <div class="pl-1">
-                                <p class="mb-0">As low as: <b>$@product.Price100.ToString("0.00")</b></p>
-                            </div>
-                        </div>
-                        <div>
-                            <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id">
-                                Details
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
+    {      
+        <div class="card m-3" style="border:1px solid #008cba;border-radius: 5px; max-width:256px;">
+            <img class="card-img-top" style="max-height:360px;" src="@product.ImageUrl"/>
+            <div class="card-body text-center">
+                <h5 class="card-title">@product.Name</h5>
+                <p class="card-text">
+                    <small class="text-info">by @product.Author</small>
+                </p>
+                <p>List Price: 
+                    <strike><b>$@product.Price.ToString("0.00")</b></strike>
+                </p>
+                <p class="mb-0">As low as: <b>$@product.Price100.ToString("0.00")</b></p>
             </div>
-        </div>
+            <div class="card-footer">
+                <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id"> Details</a>
+            </div>
+        </div>       
     }
 </div>

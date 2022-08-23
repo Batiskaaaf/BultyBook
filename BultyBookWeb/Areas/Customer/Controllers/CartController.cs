@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BultyBook.Models;
 using BultyBook.Utility;
+using Stripe.Checkout;
 
 namespace BultyBookWeb.Areas.Customer.Controllers
 {
@@ -104,6 +105,19 @@ namespace BultyBookWeb.Areas.Customer.Controllers
                 ShoppingCartVMPOST.OrderHeader.OrderTotal += cart.Price * cart.Count;
             }
 
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == claim.Value);
+            if (applicationUser.CompanyId.GetValueOrDefault() == 0)
+			{
+                ShoppingCartVMPOST.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCartVMPOST.OrderHeader.OrderStatus = SD.StatusPending;
+            }
+            else
+			{
+                ShoppingCartVMPOST.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                ShoppingCartVMPOST.OrderHeader.OrderStatus = SD.StatusApproved;
+            }
+
+
             _unitOfWork.OrderHeader.Add(ShoppingCartVMPOST.OrderHeader);
             _unitOfWork.Save();
 
@@ -120,9 +134,73 @@ namespace BultyBookWeb.Areas.Customer.Controllers
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
             }
-            _unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVMPOST.CartList);
+
+
+
+            if (applicationUser.CompanyId.GetValueOrDefault() == 0)
+                return StripeCheckout(ShoppingCartVMPOST);
+            else
+                return RedirectToAction("OrderConfirmation", "Cart", new { id = ShoppingCartVMPOST.OrderHeader.Id });
+        }
+
+        private IActionResult StripeCheckout(ShoppingCartVM ShoppingCartVMPOST)
+        {
+            var domain = "https://localhost:7079/";
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> {"card"},
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVMPOST.OrderHeader.Id}",
+                CancelUrl = domain + "customer/cart/index",
+            };
+            foreach (var item in ShoppingCartVMPOST.CartList)
+            {
+                var sessionLineItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(item.Price * 100),
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Product.Name
+                        },
+                    },
+                    Quantity = item.Count,
+                };
+                options.LineItems.Add(sessionLineItem);
+            }
+
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            _unitOfWork.OrderHeader.UpdateStripePaymentId(ShoppingCartVMPOST.OrderHeader.Id,session.Id,session.PaymentIntentId);
             _unitOfWork.Save();
-            return RedirectToAction("Index", "Home");
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == id);
+            if(orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
+			{
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+            }
+
+            var shoppingCart = _unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == orderHeader.ApplicationUserId);
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCart);
+            _unitOfWork.Save();
+            return View(id);
         }
         public IActionResult Add(int cartId)
         {
