@@ -10,10 +10,13 @@ using System.IO;
 using BultyBook.Models;
 using BultyBook.DataAccess.Repository.IRepository;
 using BultyBook.Models.VIewModels;
+using Microsoft.AspNetCore.Authorization;
+using BultyBook.Utility;
 
 namespace BultyBookWeb.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductsController : Controller
     {
         const string RootImgProducts = @"images\products\";

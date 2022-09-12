@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using BultyBook.Utility;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,15 +30,21 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">CMS</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="CoverTypes" asp-action="Index">Cover Types</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
-                            </div>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">CMS</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="CoverTypes" asp-action="Index">Cover Types</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
+                                    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Create User</a>
+
+                                </div>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="all">
                                 Manage Order
@@ -42,9 +52,10 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i> &nbsp; Cart
+                                    @await Component.InvokeAsync("ShoppingCart")
                             </a>                         
                         </li>
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

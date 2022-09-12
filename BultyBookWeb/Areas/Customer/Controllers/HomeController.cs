@@ -1,7 +1,9 @@
 ﻿using BultyBook.DataAccess.Repository.IRepository;
 using BultyBook.Models;
 using BultyBook.Models.VIewModels;
+using BultyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -52,11 +54,21 @@ namespace BultyBookWeb.Controllers
                 x => x.ApplicationUserId == claim.Value && x.ProductId == shoppingCart.ProductId);
 
             if (cartFromDb == null)
+            {
                 unitOfWork.ShoppingCart.Add(shoppingCart);
+                unitOfWork.Save();
+                HttpContext.Session.SetInt32(
+                    SD.SessionCart,
+                    unitOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == claim.Value).ToList().Count());
+                
+            }
             else
+            { 
                 unitOfWork.ShoppingCart.IncrementCount(cartFromDb, shoppingCart.Count);
-            
-            unitOfWork.Save();
+                unitOfWork.Save();
+            }
+
+
             return RedirectToAction(nameof(Index));
         }
 

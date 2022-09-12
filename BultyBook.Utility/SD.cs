@@ -8,6 +8,8 @@ namespace BultyBook.Utility
 {
     public static class SD
     {
+        public const string Domain = "https://bulty.azurewebsites.net/";
+
         public const string Role_User_Indi = "Individual";
         public const string Role_User_Comp = "Company";
         public const string Role_Admin = "Admin";
@@ -25,5 +27,7 @@ namespace BultyBook.Utility
         public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
         public const string PaymentStatusInProcess = "ApprovedForDelayedPayment";
         public const string PaymentStatusShipped = "Rejected";
+
+        public const string SessionCart = "SessionShoppingCart";
     }
 }

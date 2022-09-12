@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using BultyBook.DataAccess.Data;
 using BultyBook.Models;
 using BultyBook.DataAccess.Repository.IRepository;
+using BultyBook.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BultyBookWeb.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CompaniesController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

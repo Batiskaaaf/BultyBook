@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using BultyBook.DataAccess.Data;
 using BultyBook.Models;
 using BultyBook.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using BultyBook.Utility;
 
 namespace BultyBookWeb.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CoverTypesController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

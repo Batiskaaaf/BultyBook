@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BultyBook.Models\BultyBook.Models.csproj" />
+    <ProjectReference Include="..\BultyBook.Utility\BultyBook.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
