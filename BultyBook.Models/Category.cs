@@ -9,9 +9,11 @@ public class Category
 
     [Required]
     public string Name { get; set; }
+    [Display(Name ="Display Order")]
     public int DisplayOrder { get; set; }
 
     [DataType(DataType.Date)]
+    [Display(Name = "Create Date Time")]
     public DateTime CreatedDateTime { get; set; } = DateTime.Now;
 }
 
