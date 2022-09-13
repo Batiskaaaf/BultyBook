@@ -4,24 +4,28 @@
     ViewData["Title"] = "Home Page";
 }
 
+
 <div class="card-group">
     @foreach(var product in Model)
-    {      
-        <div class="card m-3" style="border:1px solid #008cba;border-radius: 5px; max-width:256px;">
-            <img class="card-img-top" style="max-height:360px;" src="@product.ImageUrl"/>
-            <div class="card-body text-center">
-                <h5 class="card-title">@product.Name</h5>
-                <p class="card-text">
-                    <small class="text-info">by @product.Author</small>
-                </p>
-                <p>List Price: 
-                    <strike><b>$@product.Price.ToString("0.00")</b></strike>
-                </p>
-                <p class="mb-0">As low as: <b>$@product.Price100.ToString("0.00")</b></p>
+    {            
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-2 justify-content-center">
+            <div class="card" style="border:1px solid #008cba;border-radius: 5px; max-width:256px; height:100%">
+                <img class="card-img-top" style="max-height:360px;" src="@product.ImageUrl"/>
+                <div class="card-body text-center">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">
+                        <small class="text-info">by @product.Author</small>
+                    </p>
+                    <p>List Price: 
+                        <strike><b>$@product.Price.ToString("0.00")</b></strike>
+                    </p>
+                    <p class="mb-0">As low as: <b>$@product.Price100.ToString("0.00")</b></p>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id"> Details</a>
+                </div>
             </div>
-            <div class="card-footer">
-                <a asp-action="Details" class="btn btn-primary form-control" asp-route-productId="@product.Id"> Details</a>
-            </div>
-        </div>       
+        </div>
+
     }
 </div>
