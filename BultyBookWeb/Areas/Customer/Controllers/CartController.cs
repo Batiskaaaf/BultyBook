@@ -145,7 +145,7 @@ namespace BultyBookWeb.Areas.Customer.Controllers
 
         private IActionResult StripeCheckout(ShoppingCartVM ShoppingCartVMPOST)
         {
-            var domain = "https://localhost:7079/";
+            var domain = SD.Domain;
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> {"card"},
