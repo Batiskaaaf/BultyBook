@@ -79,6 +79,7 @@ namespace BultyBookWeb.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
+            [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Please enter a valid email address")]
             public string Email { get; set; }
 
             /// <summary>
@@ -101,11 +102,21 @@ namespace BultyBookWeb.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Please enter a valid name")]
             public string Name { get; set; }
+            [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Please enter a valid street address")]
             public string? StreetAddress { get; set; }
+            [Required]
+            [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Please enter a valid city")]
             public string? City { get; set; }
+            [Required]
+            [RegularExpression("^[A-Za-z]+$",ErrorMessage = "Please enter a valid state")]
             public string? State { get; set; }
+            [Required]
             public string? PostalCode { get; set; }
+            [Required]
+            [RegularExpression("^\\+?[1-9][0-9]{7,14}$", ErrorMessage = "Please enter a valid phone number without country code")]
             public string? PhoneNumber { get; set; }
             public string? Role { get; set; }
             public int? CompanyId { get; set; }
