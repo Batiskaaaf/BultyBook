@@ -23,7 +23,7 @@ namespace BultyBook.Utility
             {
                 emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
                 //ugsvdrhtjxzvgcxw
-                emailClient.Authenticate("surovets.a101@gmail.com", "ugsvdrhtjxzvgcxw");
+                emailClient.Authenticate("{EMAIL}", "{PASS}");
                 emailClient.Send(emailToSend);
                 emailClient.Disconnect(true);
             }
